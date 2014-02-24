@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  MainTableViewController.h
 //  NuComm
 //
 //  Created by Ryan Lindbeck on 2/21/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface MainTableViewController : UITableViewController
 
 @end

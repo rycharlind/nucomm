@@ -7,12 +7,23 @@
 //
 
 #import "AppDelegate.h"
+#import <Parse/Parse.h>
+#import "MessageViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [Parse setApplicationId:@"TG6d1oRI07V0WwbSFDRNlxFh2RhjOKAPOBwXaSHT" clientKey:@"TG07HeUIOSKvRIzoBW3Fj7ZNGTwYFfAyL7HQivjn"];
+    
+    [application registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|
+     UIRemoteNotificationTypeAlert|
+     UIRemoteNotificationTypeSound];
+    
+    //NSDictionary *notificationPayload = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    //NSString *photoId = [notificationPayload objectForKey:@"p"];
+    
     return YES;
 }
 							
@@ -41,6 +52,24 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    // Store the deviceToken in the current Installation and save it to Parse.
+    PFInstallation *currentInstallation = [PFInstallation currentInstallation];
+    [currentInstallation setDeviceTokenFromData:deviceToken];
+    [currentInstallation saveInBackground];
+}
+
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))handler {
+    //NSString *photoId = [userInfo objectForKey:@"p"];
+    UINavigationController *navController = (UINavigationController *)self.window.rootViewController;
+    MessageViewController *messageViewController = [[MessageViewController alloc] init];
+    [navController pushViewController:messageViewController animated:YES];
 }
 
 @end
